@@ -74,68 +74,65 @@ class _HomePageState extends State<HomePage> {
             itemCount: notes.length,
             itemBuilder: (context, index) {
               final note = notes[index];
-              return GestureDetector(
-                onTap: () {
-                  pushWithSlideFade(context, ViewNote(note: note));
-                },
-                child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Material(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.circular(18),
+                  elevation: 2,
+                  child: InkWell(
                     borderRadius: BorderRadius.circular(18),
-                    color: Theme.of(context).colorScheme.surface,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.08),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Title
-                      Text(
-                        note.title.isEmpty ? "Untitled" : note.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-
-                      const SizedBox(height: 6),
-
-                      // Content preview
-                      Text(
-                        note.content.isEmpty ? "No content" : note.content,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey.shade700,
-                        ),
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      // Date aligned to the bottom-right
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Text(
-                          note.date,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey.shade500,
+                    onTap: () {
+                      pushWithSlideFade(context, ViewNote(note: note));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Title
+                          Text(
+                            note.title.isEmpty ? "Untitled" : note.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                        ),
+                
+                          const SizedBox(height: 6),
+                
+                          // Content preview
+                          Text(
+                            note.content.isEmpty ? "No content" : note.content,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey.shade700,
+                            ),
+                          ),
+                
+                          const SizedBox(height: 12),
+                
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Text(
+                              note.date,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey.shade500,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               );
+
             },
           ),
       drawer: Drawer(
