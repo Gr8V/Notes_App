@@ -1,11 +1,40 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:notes_app/models/notes_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 //import 'dart:convert';
 
 
 class LocalStorageService {
   static const String _themeKey = 'theme_data';
-  //static const String _NotesKey = 'notes_data';
+  static const String _notesKey = 'notes_data';
+
+  // ================================================================
+  // NOTES STORAGE
+  // ================================================================
+
+  static Future<void> saveNote(Note note) async {
+    final prefs = await SharedPreferences.getInstance();
+    final existing = prefs.getString(_notesKey);
+
+    List<dynamic> notesList = existing != null
+        ? jsonDecode(existing)
+        : [];
+
+    notesList.add(note.toJson());
+
+    await prefs.setString(_notesKey, jsonEncode(notesList));
+  }
+  static Future<List<Note>> getNotes() async {
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getString("notes_data");
+
+    if (raw == null) return [];
+
+    final List decoded = jsonDecode(raw);
+    return decoded.map((e) => Note.fromJson(e)).toList();
+  }
 
 
   // ================================================================

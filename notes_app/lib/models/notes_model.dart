@@ -1,8 +1,8 @@
 class Note {
   final String id;
   final String title;
-  final double content;
-  final double date;
+  final String content;
+  final String date;
 
   Note({
     required this.id,
