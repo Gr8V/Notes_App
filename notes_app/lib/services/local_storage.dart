@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:notes_app/models/notes_model.dart';
+import 'package:notes_app/theme/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 //import 'dart:convert';
 
 
 class LocalStorageService {
-  static const String _themeKey = 'theme_data';
   static const String _notesKey = 'notes_data';
 
   // ================================================================
@@ -80,24 +80,40 @@ class LocalStorageService {
   // THEME STORAGE
   // ================================================================
 
-  static Future<void> saveThemeMode(ThemeMode theme) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_themeKey, theme.toString());
-  }
+  static const String _themeModeKey = 'theme_mode';
+  static const String _themeTypeKey = 'theme_type';
 
+  // Existing getThemeMode method
   static Future<ThemeMode?> getThemeMode() async {
     final prefs = await SharedPreferences.getInstance();
-    final themeStr = prefs.getString(_themeKey);
+    final themeString = prefs.getString(_themeModeKey);
+    if (themeString == null) return null;
+    return ThemeMode.values.firstWhere(
+      (e) => e.toString() == themeString,
+      orElse: () => ThemeMode.system,
+    );
+  }
 
-    switch (themeStr) {
-      case 'ThemeMode.light':
-        return ThemeMode.light;
-      case 'ThemeMode.dark':
-        return ThemeMode.dark;
-      case 'ThemeMode.system':
-        return ThemeMode.system;
-      default:
-        return null;
-    }
+  // Existing saveThemeMode method
+  static Future<void> saveThemeMode(ThemeMode mode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_themeModeKey, mode.toString());
+  }
+
+  // NEW: Get theme type
+  static Future<AppThemeType?> getThemeType() async {
+    final prefs = await SharedPreferences.getInstance();
+    final themeString = prefs.getString(_themeTypeKey);
+    if (themeString == null) return null;
+    return AppThemeType.values.firstWhere(
+      (e) => e.toString() == themeString,
+      orElse: () => AppThemeType.defaultTheme,
+    );
+  }
+
+  // NEW: Save theme type
+  static Future<void> saveThemeType(AppThemeType type) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_themeTypeKey, type.toString());
   }
 }

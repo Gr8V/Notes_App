@@ -136,22 +136,99 @@ class _HomePageState extends State<HomePage> {
             },
           ),
       drawer: Drawer(
-        backgroundColor: colorScheme.tertiary,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Card(
-              child: ListTile(
-                title: Text("Folders"),
-                leading: Icon(Icons.folder),
+        backgroundColor: colorScheme.surface,
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+
+              // 🔥 HEADER
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      colorScheme.primary.withOpacity(0.25),
+                      colorScheme.secondary.withOpacity(0.25),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 32,
+                      backgroundColor: colorScheme.primary.withOpacity(0.2),
+                      child: Icon(
+                        Icons.person,
+                        color: colorScheme.primary,
+                        size: 36,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      "My Notes",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        color: colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      "Organize everything",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: colorScheme.onSurface.withOpacity(0.6),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // 🔥 MENU OPTIONS
+              _drawerTile(
+                icon: Icons.folder,
+                label: "Folders",
+                colorScheme: colorScheme,
                 onTap: () {
-                  
+                  // TODO: navigate to folders page
                 },
               ),
-            )
-          ],
+
+              _drawerTile(
+                icon: Icons.delete_outline,
+                label: "Trash",
+                colorScheme: colorScheme,
+                onTap: () {
+                  // TODO: navigate to trash page
+                },
+              ),
+
+              const Spacer(),
+
+              // 🔥 FOOTER
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Center(
+                  child: Text(
+                    "Notes App v1.0",
+                    style: TextStyle(
+                      color: colorScheme.onSurface.withOpacity(0.4),
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ),
+
+            ],
+          ),
         ),
       ),
+
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
         onPressed: () {
@@ -161,4 +238,46 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+Widget _drawerTile({
+  required IconData icon,
+  required String label,
+  required ColorScheme colorScheme,
+  required VoidCallback onTap,
+}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+    child: Material(
+      color: colorScheme.surfaceContainerHighest.withOpacity(0.4),
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(14),
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+          child: Row(
+            children: [
+              Icon(icon, color: colorScheme.primary, size: 24),
+              const SizedBox(width: 16),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: colorScheme.onSurface,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const Spacer(),
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 16,
+                color: colorScheme.onSurface.withOpacity(0.5),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }

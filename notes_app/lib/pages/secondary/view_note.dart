@@ -334,7 +334,6 @@ class _ViewNoteState extends State<ViewNote> with SingleTickerProviderStateMixin
                       ],
                     ),
                   ),
-
                 ],
               ),
             ),

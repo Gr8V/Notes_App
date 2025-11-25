@@ -5,8 +5,9 @@ import 'package:notes_app/theme/app_theme.dart';
 import 'package:notes_app/theme/theme_controller.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await loadSavedTheme();
 
   runApp(
     MultiProvider(
@@ -21,21 +22,25 @@ void main() {
 class NotesApp extends StatelessWidget {
   const NotesApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<ThemeMode>(
-      valueListenable: themeNotifier,
-      builder: (context, currentMode, child) {
-        return MaterialApp(
-          title: 'NotesApp',
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: currentMode,
-          home: const HomePage(),
-          debugShowCheckedModeBanner: false,
+    return ValueListenableBuilder<AppThemeType>(
+      valueListenable: themeTypeNotifier,
+      builder: (context, themeType, child) {
+        return ValueListenableBuilder<ThemeMode>(
+          valueListenable: themeModeNotifier,
+          builder: (context, themeMode, child) {
+            return MaterialApp(
+              title: 'NotesApp',
+              theme: AppTheme.getTheme(themeType, false),
+              darkTheme: AppTheme.getTheme(themeType, true),
+              themeMode: themeMode,
+              home: const HomePage(),
+              debugShowCheckedModeBanner: false,
+            );
+          },
         );
-      }
+      },
     );
   }
 }
