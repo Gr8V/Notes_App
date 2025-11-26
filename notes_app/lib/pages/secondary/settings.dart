@@ -142,53 +142,51 @@ class ThemeSelectionPage extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        RadioListTile<ThemeMode>(
-                          value: ThemeMode.light,
+                        RadioGroup(
                           groupValue: currentMode,
                           onChanged: (value) {
-                            if (value != null) setThemeMode(value);
-                          },
-                          title: const Row(
+                                  if (value != null) setThemeMode(value);
+                                },
+                          child: Column(
                             children: [
-                              Icon(Icons.light_mode, size: 20),
-                              SizedBox(width: 12),
-                              Text('Light Mode'),
+                              RadioListTile<ThemeMode>(
+                                value: ThemeMode.light,
+                                title: Row(
+                                  children: [
+                                    Icon(Icons.light_mode, size: 20),
+                                    SizedBox(width: 12),
+                                    Text('Light Mode'),
+                                  ],
+                                ),
+                                activeColor: colorScheme.primary,
+                              ),
+                              Divider(height: 1, color: colorScheme.outline.withValues(alpha: 0.1)),
+                              RadioListTile<ThemeMode>(
+                                value: ThemeMode.dark,
+                                title: const Row(
+                                  children: [
+                                    Icon(Icons.dark_mode, size: 20),
+                                    SizedBox(width: 12),
+                                    Text('Dark Mode'),
+                                  ],
+                                ),
+                                activeColor: colorScheme.primary,
+                              ),
+                              Divider(height: 1, color: colorScheme.outline.withValues(alpha: 0.1)),
+                              RadioListTile<ThemeMode>(
+                                value: ThemeMode.system,
+                                title: const Row(
+                                  children: [
+                                    Icon(Icons.brightness_auto, size: 20),
+                                    SizedBox(width: 12),
+                                    Text('System Default'),
+                                  ],
+                                ),
+                                activeColor: colorScheme.primary,
+                              ),
                             ],
-                          ),
-                          activeColor: colorScheme.primary,
-                        ),
-                        Divider(height: 1, color: colorScheme.outline.withValues(alpha: 0.1)),
-                        RadioListTile<ThemeMode>(
-                          value: ThemeMode.dark,
-                          groupValue: currentMode,
-                          onChanged: (value) {
-                            if (value != null) setThemeMode(value);
-                          },
-                          title: const Row(
-                            children: [
-                              Icon(Icons.dark_mode, size: 20),
-                              SizedBox(width: 12),
-                              Text('Dark Mode'),
-                            ],
-                          ),
-                          activeColor: colorScheme.primary,
-                        ),
-                        Divider(height: 1, color: colorScheme.outline.withValues(alpha: 0.1)),
-                        RadioListTile<ThemeMode>(
-                          value: ThemeMode.system,
-                          groupValue: currentMode,
-                          onChanged: (value) {
-                            if (value != null) setThemeMode(value);
-                          },
-                          title: const Row(
-                            children: [
-                              Icon(Icons.brightness_auto, size: 20),
-                              SizedBox(width: 12),
-                              Text('System Default'),
-                            ],
-                          ),
-                          activeColor: colorScheme.primary,
-                        ),
+                          )
+                          )
                       ],
                     ),
                   );
