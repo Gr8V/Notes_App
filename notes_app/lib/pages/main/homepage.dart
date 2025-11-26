@@ -16,6 +16,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Sorting options
+  String _sortBy = 'date'; // 'date', 'title'
+  bool _isAscending = false; // true = ascending, false = descending
   @override
   Widget build(BuildContext context) {
     final notes = context.watch<NotesProvider>().notes;
@@ -62,6 +65,102 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         actions: [
+          // Sort Button
+          PopupMenuButton<String>(
+            icon: Icon(Icons.sort, color: colorScheme.primary),
+            onSelected: (value) {
+              setState(() {
+                if (value == 'date' || value == 'title') {
+                  _sortBy = value;
+                } else if (value == 'ascending' || value == 'descending') {
+                  _isAscending = value == 'ascending';
+                }
+              });
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 'date',
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.calendar_today,
+                      size: 18,
+                      color: _sortBy == 'date' ? colorScheme.primary : null,
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'Sort by Date',
+                      style: TextStyle(
+                        fontWeight: _sortBy == 'date' ? FontWeight.bold : FontWeight.normal,
+                        color: _sortBy == 'date' ? colorScheme.primary : null,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                value: 'title',
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.title,
+                      size: 18,
+                      color: _sortBy == 'title' ? colorScheme.primary : null,
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'Sort by Title',
+                      style: TextStyle(
+                        fontWeight: _sortBy == 'title' ? FontWeight.bold : FontWeight.normal,
+                        color: _sortBy == 'title' ? colorScheme.primary : null,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const PopupMenuDivider(),
+              PopupMenuItem(
+                value: 'ascending',
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.arrow_upward,
+                      size: 18,
+                      color: _isAscending ? colorScheme.primary : null,
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'Ascending',
+                      style: TextStyle(
+                        fontWeight: _isAscending ? FontWeight.bold : FontWeight.normal,
+                        color: _isAscending ? colorScheme.primary : null,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                value: 'descending',
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.arrow_downward,
+                      size: 18,
+                      color: !_isAscending ? colorScheme.primary : null,
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'Descending',
+                      style: TextStyle(
+                        fontWeight: !_isAscending ? FontWeight.bold : FontWeight.normal,
+                        color: !_isAscending ? colorScheme.primary : null,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
           IconButton(
             icon: Icon(Icons.settings, color: colorScheme.primary),
             onPressed: () {
@@ -180,14 +279,26 @@ class _HomePageState extends State<HomePage> {
       return const Center(child: Text("No notes"));
     }
 
-    // Sort notes: pinned first, then by original order
+    // Sort notes
     final sortedNotes = List.from(notes);
+    
     sortedNotes.sort((a, b) {
-      // If one is pinned and other is not, pinned comes first
-      if (a.isPinned && !b.isPinned) return -1;
-      if (!a.isPinned && b.isPinned) return 1;
-      // If both have same pin status, maintain original order
-      return 0;
+      // First priority: pinned notes always at top
+      if (a.isPinned != b.isPinned) {
+        return a.isPinned ? -1 : 1;
+      }
+      
+      // Second priority: sort by selected criteria
+      int comparison = 0;
+      
+      if (_sortBy == 'date') {
+        comparison = a.date.compareTo(b.date);
+      } else if (_sortBy == 'title') {
+        comparison = a.title.toLowerCase().compareTo(b.title.toLowerCase());
+      }
+      
+      // Apply ascending/descending
+      return _isAscending ? comparison : -comparison;
     });
 
     return ListView.builder(
