@@ -24,7 +24,6 @@ class AppTheme {
       case AppThemeType.mocha:
         return isDark ? _mochaDark : _mochaLight;
       case AppThemeType.defaultTheme:
-      default:
         return isDark ? darkTheme : lightTheme;
     }
   }

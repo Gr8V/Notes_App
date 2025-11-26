@@ -20,6 +20,7 @@ class _AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
   late Animation<double> _fadeAnimation;
   bool _isTitleFocused = false;
   bool _isContentFocused = false;
+  bool _isPinned = false;
 
   @override
   void initState() {
@@ -80,7 +81,8 @@ class _AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
       id: const Uuid().v4(),
       title: _titleController.text,
       content: _contentController.text,
-      date: dateString
+      date: dateString,
+      isPinned: _isPinned
     );
     await notesProvider.addNote(entry);
     if (!mounted) return;
@@ -132,6 +134,41 @@ class _AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
           ),
         ),
         actions: [
+          // Pin Icon Button
+          Container(
+            margin: const EdgeInsets.only(right: 8),
+            decoration: BoxDecoration(
+              color: _isPinned 
+                  ? colorScheme.primary.withValues(alpha: 0.2)
+                  : colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: _isPinned 
+                    ? colorScheme.primary 
+                    : colorScheme.outline.withValues(alpha: 0.3),
+                width: 2,
+              ),
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(12),
+                onTap: () {
+                  setState(() {
+                    _isPinned = !_isPinned;
+                  });
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Icon(
+                    _isPinned ? Icons.push_pin : Icons.push_pin_outlined,
+                    color: _isPinned ? colorScheme.primary : colorScheme.onSurface,
+                    size: 24,
+                  ),
+                ),
+              ),
+            ),
+          ),
           Container(
             margin: const EdgeInsets.only(right: 8),
             decoration: BoxDecoration(

@@ -70,73 +70,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: notes.isEmpty
-        ? const Center(child: Text("No notes"))
-        : ListView.builder(
-            itemCount: notes.length,
-            itemBuilder: (context, index) {
-              final note = notes[index];
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Material(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(18),
-                  elevation: 2,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(18),
-                    onTap: () {
-                      pushWithSlideFade(context, ViewNote(note: note));
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Title
-                          Text(
-                            note.title.isEmpty ? "Untitled" : note.title,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                
-                          const SizedBox(height: 6),
-                
-                          // Content preview
-                          Text(
-                            note.content.isEmpty ? "No content" : note.content,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.grey.shade700,
-                            ),
-                          ),
-                
-                          const SizedBox(height: 12),
-                
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Text(
-                              note.date,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey.shade500,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              );
-
-            },
-          ),
+      body: _buildNotesList(notes, colorScheme),
       drawer: Drawer(
         backgroundColor: colorScheme.surface,
         child: SafeArea(
@@ -237,6 +171,113 @@ class _HomePageState extends State<HomePage> {
           pushWithSlideFade(context, AddNote());
         },
         child: Icon(Icons.add),
+      ),
+    );
+  }
+   // 📝 Notes List Builder
+  Widget _buildNotesList(List notes, ColorScheme colorScheme) {
+    if (notes.isEmpty) {
+      return const Center(child: Text("No notes"));
+    }
+
+    // Sort notes: pinned first, then by original order
+    final sortedNotes = List.from(notes);
+    sortedNotes.sort((a, b) {
+      // If one is pinned and other is not, pinned comes first
+      if (a.isPinned && !b.isPinned) return -1;
+      if (!a.isPinned && b.isPinned) return 1;
+      // If both have same pin status, maintain original order
+      return 0;
+    });
+
+    return ListView.builder(
+      itemCount: sortedNotes.length,
+      itemBuilder: (context, index) {
+        final note = sortedNotes[index];
+        return _buildNoteCard(note, colorScheme);
+      },
+    );
+  }
+
+  // 🎴 Individual Note Card
+  Widget _buildNoteCard(dynamic note, ColorScheme colorScheme) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Material(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(18),
+        elevation: 2,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(18),
+          onTap: () {
+            pushWithSlideFade(context, ViewNote(note: note));
+          },
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: note.isPinned 
+                ? BoxDecoration(
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(
+                      color: colorScheme.primary.withValues(alpha: 0.3),
+                      width: 1.5,
+                    ),
+                  )
+                : null,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Title with pin icon
+                Row(
+                  children: [
+                    if (note.isPinned)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: Icon(
+                          Icons.push_pin,
+                          size: 16,
+                          color: colorScheme.primary,
+                        ),
+                      ),
+                    Expanded(
+                      child: Text(
+                        note.title.isEmpty ? "Untitled" : note.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                // Content preview
+                Text(
+                  note.content.isEmpty ? "No content" : note.content,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey.shade700,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                // Date
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Text(
+                    note.date,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey.shade500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
