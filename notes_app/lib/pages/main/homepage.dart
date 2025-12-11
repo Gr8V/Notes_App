@@ -176,7 +176,10 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: _buildNotesList(notes, colorScheme),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: _buildNotesList(notes, colorScheme),
+      ),
       drawer: Drawer(
         backgroundColor: colorScheme.surface,
         child: SafeArea(
@@ -270,7 +273,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
         onPressed: () {
@@ -319,78 +321,101 @@ class _HomePageState extends State<HomePage> {
 
   // 🎴 Individual Note Card
   Widget _buildNoteCard(dynamic note, ColorScheme colorScheme) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.2),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.shadow.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Material(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(18),
-        elevation: 2,
+        color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(14),
           onTap: () {
             pushWithSlideFade(context, ViewNote(note: note));
           },
-          child: Container(
+          child: Padding(
             padding: const EdgeInsets.all(16),
-            decoration: note.isPinned 
-                ? BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
-                    border: Border.all(
-                      color: colorScheme.primary.withValues(alpha: 0.3),
-                      width: 1.5,
-                    ),
-                  )
-                : null,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Title with pin icon
+                // Title row with pin
                 Row(
                   children: [
-                    if (note.isPinned)
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: Icon(
-                          Icons.push_pin,
-                          size: 16,
-                          color: colorScheme.primary,
-                        ),
-                      ),
                     Expanded(
                       child: Text(
                         note.title.isEmpty ? "Untitled" : note.title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 18,
+                        style: TextStyle(
+                          fontSize: 16,
                           fontWeight: FontWeight.w700,
+                          color: colorScheme.onSurface,
+                          letterSpacing: 0.3,
                         ),
                       ),
                     ),
+                    if (note.isPinned)
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          Icons.push_pin,
+                          size: 14,
+                          color: colorScheme.onPrimaryContainer,
+                        ),
+                      ),
                   ],
                 ),
-                const SizedBox(height: 6),
+
+                const SizedBox(height: 10),
+
                 // Content preview
                 Text(
                   note.content.isEmpty ? "No content" : note.content,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.grey.shade700,
+                    fontSize: 14,
+                    height: 1.4,
+                    color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
                   ),
                 ),
+
                 const SizedBox(height: 12),
-                // Date
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    note.date,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey.shade500,
+
+                // Date with icon
+                Row(
+                  children: [
+                    Icon(
+                      Icons.access_time_rounded,
+                      size: 12,
+                      color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
                     ),
-                  ),
+                    const SizedBox(width: 4),
+                    Text(
+                      note.date,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
