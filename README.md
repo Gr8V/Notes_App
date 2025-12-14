@@ -87,7 +87,7 @@ Refer to the key files:
 ---
 
 ## Local Storage & Data
-Notes_App stores data locally so users can maintain their notes without a backend. See `lib/local_storage.dart` for how notes are serialized and deserialized, and how the storage lifecycle is managed.
+Note Nest stores data locally so users can maintain their notes without a backend. See `lib/local_storage.dart` for how notes are serialized and deserialized, and how the storage lifecycle is managed.
 
 ---
 

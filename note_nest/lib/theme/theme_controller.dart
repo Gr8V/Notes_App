@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/local_storage.dart';
+import 'package:note_nest/local_storage.dart';
 import 'app_theme.dart';
 
 // Theme notifiers

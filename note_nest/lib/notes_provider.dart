@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/notes_model.dart';
-import 'package:notes_app/local_storage.dart';
+import 'package:note_nest/notes_model.dart';
+import 'package:note_nest/local_storage.dart';
 
 class NotesProvider extends ChangeNotifier {
   // ================================

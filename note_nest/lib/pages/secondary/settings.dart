@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/pages/secondary/trash_page.dart';
-import 'package:notes_app/theme/app_theme.dart';
-import 'package:notes_app/theme/colors.dart';
-import 'package:notes_app/theme/theme_controller.dart';
-import 'package:notes_app/utils.dart';
+import 'package:note_nest/pages/secondary/trash_page.dart';
+import 'package:note_nest/theme/app_theme.dart';
+import 'package:note_nest/theme/colors.dart';
+import 'package:note_nest/theme/theme_controller.dart';
+import 'package:note_nest/utils.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});

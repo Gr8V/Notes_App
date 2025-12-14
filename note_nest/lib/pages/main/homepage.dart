@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/pages/secondary/add_note.dart';
-import 'package:notes_app/pages/secondary/search_page.dart';
-import 'package:notes_app/pages/secondary/settings.dart';
-import 'package:notes_app/pages/secondary/view_note.dart';
-import 'package:notes_app/notes_provider.dart';
-import 'package:notes_app/utils.dart';
+import 'package:note_nest/pages/secondary/add_note.dart';
+import 'package:note_nest/pages/secondary/search_page.dart';
+import 'package:note_nest/pages/secondary/settings.dart';
+import 'package:note_nest/pages/secondary/view_note.dart';
+import 'package:note_nest/notes_provider.dart';
+import 'package:note_nest/utils.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {

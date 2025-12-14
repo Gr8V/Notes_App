@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/notes_model.dart';
-import 'package:notes_app/notes_provider.dart';
+import 'package:note_nest/notes_model.dart';
+import 'package:note_nest/notes_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 

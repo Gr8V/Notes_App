@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/pages/main/homepage.dart';
-import 'package:notes_app/notes_provider.dart';
-import 'package:notes_app/theme/app_theme.dart';
-import 'package:notes_app/theme/theme_controller.dart';
+import 'package:note_nest/pages/main/homepage.dart';
+import 'package:note_nest/notes_provider.dart';
+import 'package:note_nest/theme/app_theme.dart';
+import 'package:note_nest/theme/theme_controller.dart';
 import 'package:provider/provider.dart';
 
 void main() async{
